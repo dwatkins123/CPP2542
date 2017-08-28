@@ -109,5 +109,5 @@ void printArray(const int *pArray, int nSize)
 //
 void freeMemory(int *pArray)
 {
-	delete pArray;
+	delete [] pArray;
 }

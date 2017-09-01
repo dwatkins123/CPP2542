@@ -210,7 +210,7 @@ int main()
 			case 'r':
 				// r - delete using key ("remove")
 				//
-				cout << "deleting (\"removing\") and element by key\n";
+				cout << "deleting (\"removing\") an element by key\n";
 				cout << "Please enter the key of the element to remove\n";
 				cin >> val;
 

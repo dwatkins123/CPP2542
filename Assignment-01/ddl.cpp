@@ -240,6 +240,7 @@ int main()
 						else {
 							nextPtr->previous = prevPtr;
 							prevPtr->next = nextPtr;
+							delete nodePtr;
 						}
 
 						break; // out of while loop
@@ -249,7 +250,7 @@ int main()
 				}
 
 				if (!bKeyFound) {
-					cout << "Key not found, no insert\n";
+					cout << "Key not found, no delete\n";
 				}
 
 				break;

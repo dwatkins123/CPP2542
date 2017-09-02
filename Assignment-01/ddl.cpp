@@ -2,7 +2,7 @@
 //
 // Author: Dan Watkins (dwatkins@wwzard.com)
 //
-// Date: 08/31/2017
+// Date: 09/02/2017
 //
 // Description: Implement a double linked list with various operations
 //
@@ -307,12 +307,13 @@ int main()
 				head = nullptr;
 				break;
 
-				default:
-					// Unrecognized action entered
-					cout << "Try again\n";
-					break;
-			}
+			default:
+				// Unrecognized action entered
+				cout << "Try again\n";
+				break;
+		}
 	} while (ch != 'q');
 
 	return 0;
 }
+

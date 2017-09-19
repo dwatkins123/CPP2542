@@ -40,7 +40,7 @@ void mergeSort(int data[], int size)
 		secondHalf = size - firstHalf;
 
 		mergeSort(data, firstHalf);
-		mergeSort(data, secondHalf);
+		mergeSort((data + firstHalf), secondHalf);
 
 		merge(data, firstHalf, secondHalf);
 	}

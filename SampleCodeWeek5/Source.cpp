@@ -47,7 +47,7 @@ int main()
 
 			case 'd':
 				cout << "Destroying...\n";
-				Delete(pListNode, 10);
+				Destroy(pListNode, 10);
 				break;
 
 			case 'p':
@@ -57,7 +57,7 @@ int main()
 
 			case 'q':
 				cout << "Quitting\n";
-				Delete(pListNode, 10);
+				Destroy(pListNode, 10);
 				break;
 
 			default:

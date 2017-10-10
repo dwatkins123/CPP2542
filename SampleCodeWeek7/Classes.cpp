@@ -1,48 +1,27 @@
-#include <iostream>
-#include <string>
+#include "Header.cpp"
+/*
+	PreCondition:
+		accepts two valid numbers greater than 0
+	PostCondition:
+		returns average of these two numbers
+*/
 
-using namespace std;
+int average(int num1, int num2)
+{
+	return (num1 + num2) / 2;
+}
 
-class Person {
-	private:
-		int age;
-		string name;
+/*
+PreCondition:
+accepts two valid numbers greater than 0
+PostCondition:
+returns average of these two numbers
+*/
 
-	public:
-		Person()
-		{
-			age = 0;
-			name = "";
-			cout << "Default instructor invoked" << endl;
-		}
-
-		Person(int nAge, string strName)
-		{
-			age = nAge;
-			name = strName;
-			cout << "constructor invoked" << endl;
-		}
-
-		void setName(string str)
-		{
-			name = str;
-		}
-
-		void setAge(int num)
-		{
-			age = num;
-		}
-
-		string getName() const
-		{
-			return name;
-		}
-
-		int getAge() const
-		{
-			return age;
-		}
-};
+int divide(int num1, int num2)
+{
+	return (num1 / num2);
+}
 
 int main()
 {
@@ -58,7 +37,6 @@ int main()
 	for (int i = 0; i < 5; i++) {
 		Person *p = new Person();
 	}
-
 
 	system("pause");
 	return 0;

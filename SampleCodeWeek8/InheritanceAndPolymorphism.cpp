@@ -35,6 +35,8 @@ class Info
 		string m_strAddress;
 
 	public:
+		Info() { m_strAddress = ""; }
+		Info(string strAddress) { m_strAddress = strAddress; }
 		void showType() { cout << "info" << endl; }
 		void showAddress() { cout << "address" << endl; }
 
@@ -46,7 +48,7 @@ class Student : public Person, public Info
 		int m_nStudentID;
 
 	public:
-		Student(int nStudentID, string strName, int nAge, char cGender) : Person(strName, nAge, cGender)
+		Student(int nStudentID, string strName, int nAge, char cGender, string strAddress) : Person(strName, nAge, cGender), Info(strAddress)
 		{
 			m_nStudentID = nStudentID;
 		}
@@ -62,7 +64,7 @@ class Student : public Person, public Info
 int main()
 {
 	Person p("John", 20, 'm');
-	Student s(16628, "Jack", 30, 'm');
+	Student s(16628, "Jack", 30, 'm', "425 Fawell");
 
 	Person p2;
 	Student s2;

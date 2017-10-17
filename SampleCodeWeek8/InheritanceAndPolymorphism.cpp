@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+
 using namespace std;
 
 class Person
@@ -26,7 +28,8 @@ class Person
 			cout << "Default person constructor called\n";
 		}
 
-		void showType() { cout << "Person" << endl; }
+		virtual void showType() { cout << "Person " <<  m_strName <<  endl; }
+		virtual void myTypes() = 0;
 };
 
 class Info
@@ -38,7 +41,7 @@ class Info
 		Info() { m_strAddress = ""; }
 		Info(string strAddress) { m_strAddress = strAddress; }
 		void showType() { cout << "info" << endl; }
-		void showAddress() { cout << "address" << endl; }
+		void showAddress() { cout << "address: " << m_strAddress << endl; }
 
 };
 
@@ -58,7 +61,8 @@ class Student : public Person, public Info
 			m_nStudentID = -1;
 		}
 
-		void showType() { cout << "Student" << endl; }
+		void showType() { cout << "Student: " << m_nStudentID << endl; }
+		void myTypes() { cout << "This is my concrete class" << endl;  }
 };
 
 int main()
@@ -66,12 +70,16 @@ int main()
 	Person p("John", 20, 'm');
 	Student s(16628, "Jack", 30, 'm', "425 Fawell");
 
-	Person p2;
-	Student s2;
+	// Person p2;
+	// Student s2;
 
-	s2.showType();
-	
-	s.showType();
+	Person *p1;
+
+	p1 = &p;
+	p1->showType();
+
+	p1 = &s;
+	p1->showType();
 
 	system("pause");
 	return 0;

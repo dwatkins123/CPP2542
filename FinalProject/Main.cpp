@@ -1,103 +1,103 @@
+//
+// Filename: Main.cpp
+//
+// Author: Daniel Watkins
+//
+// Date: 12/03/2017
+//
+// Description: Main program file for the stock reading and calculating
+// application.
+//
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <array>
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <direct.h>
-
+#include "StockDateData.h"
+#include "StockDataContainer.h"
 
 using namespace std;
 
-class StockDateData {
-private:
-	string mstr_Date;
-	double md_Prices[5];
-	long ml_Volume;
-	double md_TenDayMovingAverage;
-
-public:
-	void SetDate(char * cstrDate) {
-		mstr_Date = cstrDate;
-	}
-
-	void SetPrice(char *cstrPrice, int nPos) {
-		md_Prices[nPos] = strtod(cstrPrice, NULL);
-	}
-
-	void setVolume(char *cstrVolume) {
-		ml_Volume = strtol(cstrVolume, NULL, 10);
-	}
-};
-
-class StockDataContainer {
-private:
-	vector<StockDateData> ticker;
-
-public:
-	void add(StockDateData stockData) {
-		ticker.push_back(stockData);
-	}
-
-	void calculateTenDayMovingAverage() {
-	}
-};
-
 int main()
 {
-	StockDataContainer *myStockDataContainer = new StockDataContainer;
-
 	// Get the current working directory:   
 	char* buffer;
 
 	buffer = _getcwd(NULL, 0);
 
+	// Get the names file with the stock names
 	ifstream ifileStocks;
 	ifileStocks.open("data-files/names.csv");
+
+	// Open an output file for the status results
+	ofstream oStatsResults;
+	oStatsResults.open("data-files/status.csv");
 
 	string strStockName;
 
 	while (getline(ifileStocks, strStockName)) {
+
+		// Create a container for this stock
+		StockDataContainer *myStockDataContainer = new StockDataContainer;
+
 		ifstream ifileStock;
 
 		ifileStock.open("data-files/" + strStockName + ".csv");
+		// Get header line
+		string strHeaderLine;
 
-		string strStockDataLine;
+		getline(ifileStock, strHeaderLine);
 
-		bool bFirstLine = true;
+		// Now call stock data container to read in file
+		myStockDataContainer->readFromStream(ifileStock);
+		ifileStock.close();
 
-		while (getline(ifileStock, strStockDataLine)) {
+		// Calculate 10-day moving averages
+		myStockDataContainer->calculateTenDayMovingAverages();
 
-			if (bFirstLine) {
-				bFirstLine = false;
-				continue;
-			}
-			StockDateData *myStockData = new StockDateData;
-			char *next_token1 = NULL;
+		// Write data to file w/10-day moving averages
 
-			char * cstrStockDataLine = (char *)strStockDataLine.c_str();
-			myStockData->SetDate(strtok_s(cstrStockDataLine, ",", &next_token1));
+		ofstream ofileStock;
+		ofileStock.open("data-files/" + strStockName + "-final.csv");
 
-			// Do the 5 doubles
-			for (int i = 0; i < 5; i++) {
-				myStockData->SetPrice(strtok_s(NULL, ",", &next_token1), i);
+		myStockDataContainer->writeToStream(ofileStock);
 
-			}
+		ofileStock.close();
 
-			// Do the volume as a long
-			myStockData->setVolume(strtok_s(NULL, ",", &next_token1));
+		// Now read second file for this stock
+		ifileStock.open("data-files/" + strStockName + " (1).csv");
+		getline(ifileStock, strHeaderLine);
 
-			myStockDataContainer->add(*myStockData);
-		}
+		// Container method handles preventing overlap
+		myStockDataContainer->readFromStream(ifileStock);
 
 		ifileStock.close();
 
-		ofstream ofileStock;
+		// Re-calculate 10-day moving averages
+		myStockDataContainer->calculateTenDayMovingAverages();
 
-		ofileStock.open("data-files/" + strStockName + ".csv");
+		ofileStock.open("data-files/" + strStockName + "-final.csv");
 
+		// Write the data again with additional dates
+		myStockDataContainer->writeToStream(ofileStock);
 
+		ofileStock.close();
+
+		// Write a line to status file
+		oStatsResults << strStockName << ",";
+		string strStatus = "NO";
+
+		if (myStockDataContainer->IsLastPriceGreaterThanMovingAverage()) {
+			strStatus = "YES";
+		}
+
+		oStatsResults << strStatus << "\n";
+
+		delete myStockDataContainer;
 	}
+
+	oStatsResults.close();
 }
